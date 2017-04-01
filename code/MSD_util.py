@@ -60,15 +60,44 @@ def load_data(if_str, users, songs):
     scipy.io.savemat('../data/test.mat', {'test': test})
     return train, valid, test
 
-def song_to_users(if_str, set_users=None, ratio=1.0):
+def song_to_users(if_str, u2i):
     stu = dict()
     with open(if_str,"r") as f:
         for line in f:
-            if random.random()<ratio:
-                user,song,_ = line.strip().split('\t')
-                if not set_users or user in set_users:
-                    if song in stu:
-                        stu[song].add(user)
-                    else:
-                        stu[song] = set([user])
+            user, song, _ = line.strip().split('\t')
+            if song in stu:
+                stu[song].add(u2i[user])
+            else:
+                stu[song] = set([u2i[user]])
     return stu
+
+def user_to_songs(if_str):
+    uts=dict()
+    with open(if_str,"r") as f:
+        for line in f:
+            user,song,_=line.strip().split('\t')
+            if user in uts:
+                uts[user].add(song)
+            else:
+                uts[user]=set([song])
+    return uts
+
+def unique_users(if_str):
+    u=set()
+    with open(if_str,"r") as f:
+        for line in f:
+            user,_,_=line.strip().split('\t')
+            if user not in u:
+                u.add(user)
+    return u 
+
+def save_recommendations(r,songs_file,ofile):
+    print "Loading song indices from " + songs_file
+    s2i=song_to_idx(songs_file)
+    print "Saving recommendations"
+    f=open(ofile,"w")
+    for r_songs in r:
+        indices=map(lambda s: s2i[s],r_songs)
+        f.write(" ".join(indices)+"\n")
+    f.close()
+    print "Ok."
