@@ -126,7 +126,36 @@ class PredSIc(PredSI):
             else:
                 s_scores[s]=0.0
         return s_scores
+class PredSU(Pred):
 
+    '''Implement user-similarity based predictor'''
+    
+    def __init__(self, _u2s_tr, _A=0, _Q=1):
+        Pred.__init__(self)
+        self.u2s_tr = _u2s_tr
+        self.Q = _Q
+        self.A = _A
+    
+    def printati(self):
+        print "PredSU(A=%f,Q=%f)"%(self.A,self.Q),
+
+    def Score(self,user_songs,  all_songs):
+        s_scores={}
+        for u_tr in self.u2s_tr:
+            if not u_tr in self.u2s_tr:
+                continue
+            w=float(len(self.u2s_tr[u_tr] & user_songs))
+            if w > 0:
+                l1=len(user_songs)
+                l2=len(self.u2s_tr[u_tr])
+                w/=(math.pow(l1,self.A)*(math.pow(l2,(1.0-self.A))))
+                w=math.pow(w,self.Q)
+            for s in self.u2s_tr[u_tr]:
+                if s in s_scores:
+                    s_scores[s]+=w
+                else:
+                    s_scores[s]=w
+        return s_scores
 ###
 ### RECOMMENDERS
 ###
