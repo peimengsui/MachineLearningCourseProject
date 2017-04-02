@@ -5,15 +5,22 @@ from scipy.sparse import csr_matrix
 from sklearn.model_selection import train_test_split
 import scipy.io
 
-def song_to_count(if_str):
+def song_to_count(if_str, binary=True):
     stc  = dict()
     with open(if_str,"r") as f:
         for line in f:
-            _,song,_ = line.strip().split('\t')
-            if song in stc:
-                stc[song] += 1
+            if binary:
+                _, song, _ = line.strip().split('\t')
+                if song in stc:
+                    stc[song] += 1
+                else:
+                    stc[song] = 1
             else:
-                stc[song] = 1
+                _, song, freq = line.strip().split('\t')
+                if song in stc:
+                    stc[song] += int(freq)
+                else:
+                    stc[song] = int(freq)
     return stc
 
 def sort_dict_dec(d):
