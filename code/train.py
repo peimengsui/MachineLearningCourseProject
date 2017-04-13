@@ -4,6 +4,7 @@ import MSD_util,MSD_rec
 #user_max ending user index
 # mode 1:user based mode 2:song based
 user_min,user_max,mode=sys.argv[1:]
+suffix=user_min+"_"+user_max
 user_min=int(user_min)
 user_max=int(user_max)
 mode=int(mode)
@@ -15,7 +16,7 @@ f_triplets_vp = "../data/valid_predict.txt"
 
 # parameters
 _A = 0.5
-_Q = 1
+_Q = 6
 _tau = 500
 _Gamma = [1.0]
 _n_batch = 10
@@ -36,7 +37,7 @@ if mode==1:
 	recommender = MSD_rec.Reco(songs_ordered, _tau, _Gamma)
 	recommender.Add(predictor)
 
-	recommender.Valid(_tau, u2s_vv.keys()[user_min:user_max], u2s_vv, u2s_vp, _n_batch)
+	recommender.Valid(10, u2s_vp.keys()[user_min:user_max], u2s_vv, u2s_vp, _n_batch,suffix)
 if mode==2:
 	print 'default ordering by popularity'
 	sys.stdout.flush()
@@ -63,6 +64,6 @@ if mode==2:
 	recommender = MSD_rec.Reco(songs_ordered, _tau, _Gamma)
 	recommender.Add(predictor)
 
-	recommender.Valid(_tau, u2s_vv.keys()[user_min:user_max], u2s_vv, u2s_vp, _n_batch)
+	recommender.Valid(10, u2s_vp.keys()[user_min:user_max], u2s_vv, u2s_vp, _n_batch,suffix)
 # recs = recommender.RecommendToUsers(users_v[user_min:user_max], u2s_v)
 # MSD_util.save_recommendations(recs, "../data/kaggle_songs.txt", osfile)

@@ -193,8 +193,9 @@ class Reco:
             ii[pi]+=1
         return r
 
-    def Valid(self, T, users_te, u2s_v, u2s_h, n_batch=10):
+    def Valid(self, T, users_te, u2s_v, u2s_h, n_batch,suffix):
         ave_AP = 0.0
+        #for t in xrange(len(users_te)/n_batch):
         for t in xrange(T):
             rusers = users_te[t*n_batch:(t+1)*n_batch]
             rec = []
@@ -233,7 +234,9 @@ class Reco:
             print "MAP(%d): %f (%f)"%(t+1, map_cur, ave_AP/(t+1))
             print
             fl()
-    
+            if t==0:
+                valid_loss_txt = open('valid'+suffix+'.txt', 'w')
+            valid_loss_txt.write("%s,%s\n" %(map_cur,ave_AP/(t+1)))
         print "Done!"
 
     def RecommendToUser(self, user, u2s_v):
