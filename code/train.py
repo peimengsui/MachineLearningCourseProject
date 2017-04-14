@@ -37,7 +37,7 @@ if mode==1:
 	recommender = MSD_rec.Reco(songs_ordered, _tau, _Gamma)
 	recommender.Add(predictor)
 
-	recommender.Valid(10, u2s_vp.keys()[user_min:user_max], u2s_vv, u2s_vp, _n_batch,suffix)
+	recommender.Valid(100, u2s_vp.keys()[user_min:user_max], u2s_vv, u2s_vp, _n_batch,suffix)
 if mode==2:
 	print 'default ordering by popularity'
 	sys.stdout.flush()
@@ -64,6 +64,6 @@ if mode==2:
 	recommender = MSD_rec.Reco(songs_ordered, _tau, _Gamma)
 	recommender.Add(predictor)
 
-	recommender.Valid(10, u2s_vp.keys()[user_min:user_max], u2s_vv, u2s_vp, _n_batch,suffix)
+	recommender.Valid(100, u2s_vp.keys()[user_min:user_max], u2s_vv, u2s_vp, _n_batch,suffix)
 # recs = recommender.RecommendToUsers(users_v[user_min:user_max], u2s_v)
 # MSD_util.save_recommendations(recs, "../data/kaggle_songs.txt", osfile)

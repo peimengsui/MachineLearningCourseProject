@@ -232,7 +232,6 @@ class Reco:
             map_cur = mAP(rusers, rec, u2s_h, self.tau)
             ave_AP += map_cur
             print "MAP(%d): %f (%f)"%(t+1, map_cur, ave_AP/(t+1))
-            print
             fl()
             if t==0:
                 valid_loss_txt = open('valid'+suffix+'.txt', 'w')
