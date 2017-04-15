@@ -1,6 +1,5 @@
 import os,sys,random,math,time
 import MSD_util
-
 def fl():
     sys.stdout.flush()
 
@@ -198,6 +197,7 @@ class Reco:
         #for t in xrange(len(users_te)/n_batch):
         for t in xrange(T):
             rusers = users_te[t*n_batch:(t+1)*n_batch]
+            rusers = random.shuffle(rusers)
             rec = []
             start = time.clock()
             for i,ru in enumerate(rusers):
