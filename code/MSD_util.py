@@ -54,7 +54,7 @@ def get_unique(if_str, users, songs):
                 _, song, _ = line.strip().split('\t')
                 if song not in s:
                     s.add(song)
-    return sorted(u), sorted(s) 
+    return u, s 
 
 def song_to_users(if_str, u2i):
     stu = dict()
