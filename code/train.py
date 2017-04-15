@@ -3,7 +3,7 @@ import MSD_util,MSD_rec
 #user_min beginning user index
 #user_max ending user index
 # mode 1:user based mode 2:song based
-user_min,user_max,mode,q=sys.argv[1:]
+user_min,user_max,mode,Q=sys.argv[1:]
 suffix=user_min+"_"+user_max
 user_min=int(user_min)
 user_max=int(user_max)
@@ -16,7 +16,7 @@ f_triplets_vp = "../data/valid_predict.txt"
 
 # parameters
 _A = 0.5
-_Q = int(q)
+_Q = int(Q)
 _tau = 500
 _Gamma = [1.0]
 _n_batch = 10
