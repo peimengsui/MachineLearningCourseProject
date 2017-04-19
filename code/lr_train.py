@@ -17,10 +17,10 @@ f_triplets_tr = "../data/train_data.txt"
 # f_triplets_vp = "../data/valid_predict.txt"
 f_triplets_va = "../data/valid_data.txt"
 
-def generate_interaction(_tr, _vv):
+def generate_interaction(_tr, _va):
 	print "Creating user song-interaction lists"
 	_, all_songs = MSD_util.get_unique(_tr, users=False, songs=True)
-	train_pairs, valid_pairs = MSD_util.get_user_song_pairs(_tr, _vv)
+	train_pairs, valid_pairs = MSD_util.get_user_song_pairs(_tr, _va)
 	return all_songs, train_pairs, valid_pairs
 
 def generate_features(all_songs, listened_songs):
@@ -52,7 +52,7 @@ def train_and_score(_tr, _va, model_size):
 
 	print "Creating model"
 	extractor = FeatureHasher(n_features=2**model_size)
-	model = SGDClassifier(loss="log", penalty="L2")
+	model = SGDClassifier(loss="log", penalty="l2", n_jobs=-1)
 
 	print "Training"
 	for i, (user, listened_songs) in enumerate(train_pairs.iteritems()):
@@ -64,7 +64,7 @@ def train_and_score(_tr, _va, model_size):
 		model.partial_fit(features, labels, classes=[0, 1])
 
 	joblib.dump(model, 'model_log_l2_size%d.pkl' % model_size)
-	model = joblib.load('model_log_l2_size%d.pkl' % model_size) 
+	model = joblib.load('model_log_l2_size%d.pkl' % model_size)
 
 	print "Testing"
 	all_labels, all_preds, all_probas = [], [], []
@@ -85,8 +85,11 @@ def train_and_score(_tr, _va, model_size):
 	print "Model size", model_size, "AUC", roc_auc
 	print cm
 
+	np.save("labels_logit_size%d.npy" % model_size, all_labels)
+	np.save("probas_logit_size%d.npy" % model_size, all_probas)
+
 	fpr, tpr, _ = roc_curve(all_labels, all_probas)
-	plt.figure()
+	plt.figure(figsize=(10, 10))
 	lw = 2
 	plt.plot(fpr, tpr, color='darkorange',
 		lw=lw, label='ROC curve (area = %0.2f)' % roc_auc)
@@ -97,7 +100,10 @@ def train_and_score(_tr, _va, model_size):
 	plt.ylabel('True Positive Rate')
 	plt.title('Receiver operating characteristic for model size %d' % model_size)
 	plt.legend(loc="lower right")
+	plt.tight_layout()
+	plt.savefig('model_log_l2_size%d.png' % model_size)
 	plt.show()
+
 
 def main():
 	# model size by number of bits
