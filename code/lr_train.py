@@ -8,8 +8,8 @@ from sklearn.linear_model import SGDClassifier
 from sklearn.metrics import roc_curve, roc_auc_score, confusion_matrix
 from sklearn.externals import joblib
 import MSD_util
-import matplotlib.pyplot as plt
-plt.style.use("fivethirtyeight")
+#import matplotlib.pyplot as plt
+#plt.style.use("fivethirtyeight")
 
 # paths to data
 f_triplets_tr = "../data/train_data.txt"
@@ -64,6 +64,7 @@ def train_and_score(_tr, _va, model_size):
 		model.partial_fit(features, labels, classes=[0, 1])
 
 	joblib.dump(model, 'model_log_l2_size%d.pkl' % model_size)
+<<<<<<< HEAD
 	model = joblib.load('model_log_l2_size%d.pkl' % model_size)
 
 	print "Testing"
@@ -103,6 +104,42 @@ def train_and_score(_tr, _va, model_size):
 	plt.tight_layout()
 	plt.savefig('model_log_l2_size%d.png' % model_size)
 	plt.show()
+=======
+	# model = joblib.load('model_log_l2_size%d.pkl' % model_size) 
+
+	# print "Testing"
+	# all_labels, all_preds, all_probas = [], [], []
+	# for i, (user, listened_songs) in enumerate(valid_pairs.iteritems()):
+	# 	print "Testing on user", i, user
+	# 	labels, listened_pairs, unlistened_pairs = generate_features(all_songs, listened_songs)
+	# 	all_labels.extend(labels)
+	# 	listened_features = extractor.transform(listened_pairs)
+	# 	unlistend_features = extractor.transform(unlistened_pairs)
+	# 	features = sp.vstack([listened_features, unlistend_features])
+	# 	preds = model.predict(features)
+	# 	probas = model.predict_proba(features)
+	# 	all_preds.extend(preds), all_probas.extend(probas[:, 1])
+
+	# print "Scoring"
+	# roc_auc = roc_auc_score(all_labels, all_probas)
+	# cm = confusion_matrix(all_labels, all_preds)
+	# print "Model size", model_size, "AUC", roc_auc
+	# print cm
+
+	# fpr, tpr, _ = roc_curve(all_labels, all_probas)
+	# plt.figure()
+	# lw = 2
+	# plt.plot(fpr, tpr, color='darkorange',
+	# 	lw=lw, label='ROC curve (area = %0.2f)' % roc_auc)
+	# plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+	# plt.xlim([0.0, 1.0])
+	# plt.ylim([0.0, 1.05])
+	# plt.xlabel('False Positive Rate')
+	# plt.ylabel('True Positive Rate')
+	# plt.title('Receiver operating characteristic for model size %d' % model_size)
+	# plt.legend(loc="lower right")
+	# plt.show()
+>>>>>>> f05b5f044ed0e1b9a9800dcd145fb641854aa361
 
 
 def main():
