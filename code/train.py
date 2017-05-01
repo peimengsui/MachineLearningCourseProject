@@ -15,9 +15,9 @@ f_triplets_vv = "../data/valid_visible.txt"
 f_triplets_vp = "../data/valid_predict.txt"
 
 # parameters
-_A = 0.5
+_A = 0
 _Q = int(Q)
-_tau = 500
+_tau = 200
 _Gamma = [1.0]
 _n_batch = 10
 

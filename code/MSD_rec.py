@@ -199,7 +199,6 @@ class Reco:
         for t in xrange(T):
             random.shuffle(users_te)
             rusers = users_te[t*n_batch:(t+1)*n_batch]
-            print(rusers)
             rec = []
             start = time.clock()
             for i,ru in enumerate(rusers):
